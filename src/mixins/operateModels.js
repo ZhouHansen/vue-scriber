@@ -20,7 +20,7 @@ export default {
         if (models.length === 0){
           clearInterval(addPoint)
         }
-      },0.001)
+      },0.0001)
     },
     addPoint({model, fetch, models}){
       delete model.uniqueId
@@ -49,6 +49,7 @@ export default {
 
       currentmodel.iscurrent = false
       target.model.iscurrent = true
+      target.model.ctrlline.hide = false
     },
 
     mirrorCtrlline({x, y}){
@@ -93,10 +94,5 @@ export default {
         model.ctrlline = ctrlline
       }
     },
-
-    clearModels(){
-      this.models = []
-    },
-
   }
 }

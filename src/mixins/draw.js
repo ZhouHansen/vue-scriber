@@ -52,13 +52,20 @@ export default {
 
       this.stage.update()
     },
-    drawLine(model, lastmodel){
+    drawLine(model, lastmodel, isFetch){
       var line = new createjs.Shape()
 
       line.graphics.setStrokeStyle(1)
       line.graphics.beginStroke("#000")
       line.graphics.moveTo(model.x, model.y)
-      drawcurve(line.graphics, lastmodel.x, lastmodel.y, lastmodel, model)
+      console.log(lastmodel, model)
+
+      if (isFetch){
+        drawcurve(line.graphics, lastmodel.x, lastmodel.y, model, lastmodel)
+      } else {
+        drawcurve(line.graphics, lastmodel.x, lastmodel.y, lastmodel, model)
+      }
+
       line.graphics.lineTo(lastmodel.x, lastmodel.y)
       line.uniqueIds = [lastmodel.uniqueId, model.uniqueId]
       line.models = [lastmodel, model]
@@ -253,13 +260,17 @@ export default {
       })
     },
     createCtrlline(model){
+      if (!model.iscurrent){
+        return
+      }
+
       var x = model.ctrlline.x
         , y = model.ctrlline.y
         , x2 = model.x
         , y2 = model.y
         , uniqueId = model.uniqueId
         , isMirror = model.ctrlline.isMirror
-
+      console.log(model)
       this.drawSquare(x, y, uniqueId, model, false)
       this.drawCtrlline(x2, y2, x, y, uniqueId, model, false)
 

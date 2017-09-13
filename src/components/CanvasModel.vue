@@ -11,6 +11,7 @@ export default {
   watch:{
     iscurrent(){
       this.$parent.drawCurrent(this.iscurrent, this.uniqueId)
+      this.$parent.createCtrlline(this)
     },
 
     ctrlline(newctrl, oldctrl){

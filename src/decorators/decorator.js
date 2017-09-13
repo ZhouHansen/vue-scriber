@@ -69,6 +69,7 @@ export const ctrlable = function(target, supercanvas) {
 
     if (supercanvas.$store.state.status === 'ctrlline'){
       supercanvas.changeCurrent(target)
+      supercanvas.hideCtrl()
     }
   })
 

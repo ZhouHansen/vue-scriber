@@ -48,7 +48,8 @@ export default {
         , x = data.containerp.x
         , y = data.containerp.y
 
-      this.clearModels()
+      this.isFetch = true
+      this.resetData()
       this.changeContainer({x, y})
       this.fetchModels(data.models)
     })
@@ -63,16 +64,7 @@ export default {
   },
 
   data () {
-    return {
-      models:[],
-      modelslength:0,
-      removedtarget:null,
-      ismousedown: false,
-      containerp:{
-        x:0,
-        y:0
-      }
-    }
+    return this.getInitialData()
   },
 
   watch: {
@@ -89,7 +81,8 @@ export default {
 
           if (models[models.length - 2] !== void 0){
             var lastmodel = models[models.length - 2]
-            this.drawLine(model, lastmodel)
+            console.log(this.isFetch)
+            this.drawLine(model, lastmodel, this.isFetch)
           }
         } else if (models.length === 0){
           this.container.removeAllChildren()
@@ -97,7 +90,6 @@ export default {
         } else if (models.length < this.modelslength){
           this.simpleremove(this.removedtarget)
         }
-
         this.modelslength = models.length
       },
       deep: true
@@ -158,6 +150,8 @@ export default {
           y
         }
 
+      this.isFetch = false
+
       this.addPoint({
         model,
         fetch: false,
@@ -167,12 +161,13 @@ export default {
       this.ismousedown = true
     },
     mouseup(e){
+      this.isFetch = false
       this.$store.dispatch('changeDragging', false)
       this.ismousedown = false
     },
     mousemove(e){
-
       var status = this.$store.state.status
+      this.isFetch = false
 
       if (this.ismousedown && (status === 'line'|| status === 'ctrlline')){
         var x = e.pageX - $(e.target).offset().left - this.containerp.x
@@ -180,7 +175,22 @@ export default {
 
         this.mirrorCtrlline({x,y})
       }
-    }
+    },
+    getInitialData(){
+      return {
+        models:[],
+        modelslength:0,
+        removedtarget:null,
+        ismousedown: false,
+        containerp:{
+          x:0,
+          y:0
+        }
+      }
+    },
+    resetData(){
+      Object.assign(this.$data, this.getInitialData())
+    },
   },
 }
 </script>
